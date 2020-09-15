@@ -1,0 +1,15 @@
+　　网站文本编辑器使用的是ueditor，测试上传图片显示后台配置项未成功加载，上传插件不能正常使用。
+
+　　查阅了ueditor的文档，有关运行测试那里先访问ueditor/controller.php，提示出错，再访问ueditor/php/controller.php?action=config，提示PHP Fatal error: Call to undefined function json_decode()。原因是json相关函数为定义。
+
+　　查看php官方文档，从php5.2就开始支持json扩展，可能是意外删掉了json组件，故重新安装。
+
+　　sudo apt-get install php5-json
+
+　　sudo service nginx restart
+
+　　sudo php5-fpm restart
+
+　　问题解决
+
+　　如果php版本太低可以升级到5.2以后，不想重新安装php的话，可以自定义函数 json_encode 和 json_decode
