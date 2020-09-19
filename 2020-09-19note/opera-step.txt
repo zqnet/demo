@@ -1,0 +1,71 @@
+一、安装docker\docker-compose
+安装Docker：
+
+aliyun:
+  修改安装源地址：
+  $ sudo yum-config-manager \
+    --add-repo \
+    http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+  安装：
+  $ sudo yum install docker-ce docker-ce-cli containerd.io
+  启动：
+  $ sudo systemctl start docker
+安装docker-compose：
+
+1、安装python-pip
+yum -y install epel-release
+yum -y install python-pip
+
+2、安装docker-compose
+
+pip install docker-compose
+待安装完成后，执行查询版本的命令，即可安装docker-compose
+docker-compose version
+
+---------------------------
+二、docker国内仓库和镜像:
+mkdir -p /etc/docker
+sudo tee /etc/docker/daemon.json <<-'EOF'
+{
+  "registry-mirrors": ["<your accelerate address>"]
+}
+EOF
+
+国内加速站点
+https://registry.docker-cn.com
+http://hub-mirror.c.163.com
+https://3laho3y3.mirror.aliyuncs.com
+http://f1361db2.m.daocloud.io
+https://mirror.ccs.tencentyun.com
+
+----------------------------------
+三、gitlab for docker安装过程
+1、修改aliyun的加速
+2、docker pull twang2218/gitlab-ce-zh
+3、新增文件夹
+   /usr/local/docker/gitlab
+       /usr/local/docker/gitlab/config
+       /usr/local/docker/gitlab/data
+       /usr/local/docker/gitlab/logs
+4、新建docker-compose.yml文件
+version: '3'
+services:
+  web:
+    image: 'twang2218/gitlab-ce-zh'
+    restart: always
+    hostname: '10.211.55.4'
+    environment:
+      TZ: 'Asia/Shanghai'
+      GITLAB_OMNIBUS_CONFIG:
+        unicorn['port' ] = 8888
+    ports:
+      - '8090:80'
+      - '8443:443'
+    volumes:
+      - /usr/local/docker/gitlab/config:/etc/gitlab
+      - /usr/local/docker/gitlab/data:/var/opt/gitlab
+      - /usr/local/docker/gitlab/logs:/var/log/gitlab
+5、运行yml文件
+  docker-compose up
+6、使用浏览器查看效果
+  http://10.211.55.4:8090/

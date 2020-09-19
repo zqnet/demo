@@ -1,1 +1,35 @@
 https://blog.csdn.net/yds8903/article/details/106099901/
+
+docker run -d -p 91:80 nginx ：在后台运行nginx，若没有镜像则先下载，并将容器的80端口映射为宿主机的91端口。
+-d：后台运行
+-P：随机端口映射
+-p：指定端口映射
+-net：网络模式
+docker ps：列出运行中的容器
+docker ps -a ：列出所有的容器
+docker stop 容器id：停止容器
+docker kill 容器id：强制停止容器
+docker start 容器id：启动已停止的容器
+docker inspect 容器id：查看容器的所有信息
+docker container logs 容器id：查看容器日志
+docker top 容器id：查看容器里的进程
+docker exec -it 容器id /bin/bash：进入容器
+exit：退出容器
+docker rm 容器id：删除已停止的容器
+docker rm -f 容器id：删除正在运行的容器
+
+镜像相关
+docker search java：在Docker Hub（或阿里镜像）仓库中搜索关键字（如java）的镜像
+docker pull java:8：从仓库中下载镜像，若要指定版本，则要在冒号后指定
+docker images：列出已经下载的镜像
+docker rmi java：删除本地镜像
+docker build：构建镜像
+
+
+
+Docker account
+   Zhangnetmail   1213***mp   zhangnetmail@163.com
+
+
+清华大学开源软件镜像站 安装gitlab （下载速度很快：）
+https://mirror.tuna.tsinghua.edu.cn/help/gitlab-ce/

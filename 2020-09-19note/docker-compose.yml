@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web:
+    image: 'twang2218/gitlab-ce-zh'
+    restart: always
+    hostname: '10.211.55.4'
+    environment:
+      TZ: 'Asia/Shanghai'
+      GITLAB_OMNIBUS_CONFIG:
+        unicorn['port' ] = 8888
+    ports:
+      - '8090:80'
+      - '8443:443'
+    volumes:
+      - /usr/local/docker/gitlab/config:/etc/gitlab
+      - /usr/local/docker/gitlab/data:/var/opt/gitlab
+      - /usr/local/docker/gitlab/logs:/var/log/gitlab
