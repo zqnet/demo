@@ -1,0 +1,21 @@
+settings.json
+{
+    "workbench.sideBar.location": "left",
+    "php.suggest.basic": false,
+    "php.validate.executablePath": "/usr/bin/php"
+}
+
+安装扩展：
+  apt-get install php-xdebug
+
+修改php.ini
+  vi /etc/php/7.3/cli/php.ini
+[XDebug]
+xdebug.remote_enable = 1
+xdebug.remote_autostart = 1
+====
+xdebug.remote_enable = 1
+xdebug.remote_autostart = 1
+xdebug.profiler_output_dir="E:\php\PHPTutorial\tmp\xdebug"
+xdebug.trace_output_dir="E:\php\PHPTutorial\tmp\xdebug"
+zend_extension="php_xdebg.dll"      ;绝对地址
