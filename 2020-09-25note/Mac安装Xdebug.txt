@@ -1,0 +1,61 @@
+20190919 最近改用 vsCode ，php 调试使用 xdebug，需要安装 xdebug
+xdebug 安装怎么这么费劲？
+1. 参考
+https://www.jianshu.com/p/47fcf57b490e
+感谢这位，基本上是照着他的来完成的
+
+2. 确认一下自己的环境
+php -v
+
+PHP 7.2.8 (cli) (built: Jul 19 2018 12:15:24) ( NTS )
+Copyright © 1997-2018 The PHP Group
+Zend Engine v3.2.0, Copyright © 1998-2018 Zend Technologies
+with Zend OPcache v7.2.8, Copyright © 1999-2018, by Zend Technologies
+
+pecl -V
+PEAR Version: 1.10.5
+PHP Version: 7.2.8
+Zend Engine Version: 3.2.0
+Running on: Darwin dhbm-on-mac20180816.local 18.7.0 Darwin Kernel Version 18.7.0: Tue Aug 20 16:57:14 PDT 2019; root:xnu-4903.271.2~2/RELEASE_X86_64 x86_64
+
+3. 下载安装包
+https://xdebug.org/download.php
+
+找到合适版本的 tgz 文件，这是我的对应的安装包
+
+在这里插入图片描述
+
+4. pecl 安装 Xdebug 扩展包 （macos默认已经安装xdebug，但是没有打开相关的xdebug设置，所以可以无需按照xdebug扩展包）
+在phpinfo中查看extension_dir的位置，进入查看是否已经存在xdebug.so文件，如果没有就进入下面步骤：
+
+我不是 wget 下载的，所以文件在 Downloads 下
+cd Downloads/
+mkdir xdebug
+mv xdebug-latest.tgz xdebug
+cd xdebug/
+
+4.1、sudo pecl install xdebug-2.7.2.tgz
+
+8614324420 576 -rwxr-xr-x  1 root  wheel  293792  9 19 16:10 /private/tmp/pear/temp/pear-build-rootSMmExM/install-xdebug-2.7.2/usr/local/Cellar/php/7.2.8/pecl/20170718/xdebug.so
+Build process completed successfully
+Installing '/usr/local/Cellar/php/7.2.8/pecl/20170718/xdebug.so'
+install ok: channel://pecl.php.net/xdebug-2.7.2
+Extension xdebug enabled in php.ini
+
+4.2、执行完成后，会在xdebug文件夹下生成xdebug.so,拷贝该文件至/usr/lib/php/extensions/no-debug-non-zts-20180731/目录下（目录的位置可以通过phpinfo查看extension_dir的属性）
+
+5、修改 php.ini，加上 Xdebug  （mac默认的ini文件的路径是/etc/php.ini.default，需要cp一份php.ini.default，改名为php.ini）
+sudo vim /etc/php.ini
+
+6、增加以下内容
+ # add Xdebug by wzh 20190919 
+[Xdebug]
+zend_extension="/usr/lib/php/extensions/no-debug-non-zts-20180731/xdebug.so"
+xdebug.auto_trace=On
+xdebug.profiler_enable=On
+xdebug.remote_enable=1
+
+7、重启生效
+sudo apachectl restart
+
+8、检查 phpinfo ，找到 Xdebug是否安装成功！
