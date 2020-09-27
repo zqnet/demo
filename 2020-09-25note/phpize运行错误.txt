@@ -1,0 +1,9 @@
+AndyMacBookPro:phpredis andy$ phpize
+Configuring for:
+PHP Api Version:         20100412
+Zend Module Api No:      20100525
+Zend Extension Api No:   220100525
+Cannot find autoconf. Please check your autoconf installation and the
+
+解决方法：
+AndyMacBookPro:phpredis andy$ brew install autoconf

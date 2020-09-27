@@ -1,0 +1,26 @@
+https://blog.csdn.net/weixin_33877092/article/details/91423779
+
+在本地仓库忽略
+
+要忽略一个目录下的某个文件或者文件夹，只需要在 .gitignore 中进行配置，我们可以在这个本地仓库的根目录下配置 .gitignore 文件，如此一来这个文件夹下的所有子文件夹的.DS_Store 都会被忽略，如：
+node_modules
+dist
+.vscode
+deploy.sh
+.DS_Store
+如果我们在创建 .gitignore 之前.DS_Store 就已经存在于这个文件中，我们需要通过 git rm --cached .DS_Store 删除这个索引
+
+但是在每一个项目中都这样进行配置不免有些繁琐，我们也可以在全局进行配置
+
+在全局进行配置
+
+我们的 git 一般会按照根目录下的 .gitconfig 中的配置运行，我们可以先在根目录下创建一个 .gitignore_global 文件，格式和.gitignore相同，其中的内容是所有要忽略的文件：
+.DS_Store
+node_modules
+.vscode
+.idea
+之后我们要在 .gitconfig 添加这条配置，将下面两行添加到文件末尾
+
+[core]
+    excludesfile =/Users/你自己的用户名/.gitignore_global
+end
