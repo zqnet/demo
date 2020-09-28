@@ -1,0 +1,12 @@
+https://www.runoob.com/docker/macos-docker-install.html
+
+2、docker中配置加速的json参数： preferences-->docker Engine
+"registry-mirrors": ["http://hub-mirror.c.163.com"]
+
+3、执行容器的命令例子：
+qzhang@qzhangdeiMac zq % docker run --name apache-buster -p 8000:80 -v /Users/qzhang/zqnet/html:/var/www/html -d 11fe
+注解：
+   容器执行后的名称为： apache-buster
+   端口镜像： 8000:80
+   磁盘映射：/Users/qzhang/zqnet/html:/var/www/html 
+
