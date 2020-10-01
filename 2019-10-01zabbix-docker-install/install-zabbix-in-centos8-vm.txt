@@ -1,0 +1,54 @@
+
+第一步：下载docker images安装包：
+docker pull daocloud.io/library/mysql:5.7.4
+docker pull zabbix/zabbix-server-mysql
+docker pull zabbix/zabbix-web-nginx-mysql
+
+
+第二步：启动数据库
+========centos 8======
+mkdir /root/mysql/conf
+mkdir /root/mysql/logs
+mkdir /root/mysql/data
+
+docker run --name mysql-server \
+      -e MYSQL_DATABASE="zabbix" \
+      -e MYSQL_USER="zabbix" \
+      -e MYSQL_PASSWORD="zabbix_pwd" \
+      -e MYSQL_ROOT_PASSWORD="root_pwd" \
+      -v /root/mysql/conf:/etc/mysql \
+      -v /root/mysql/logs:/logs \
+      -v /root/mysql/data:/var/lib/mysql \
+      --privileged=true \
+      -d daocloud.io/library/mysql:5.7.4
+ 
+第三步：启动 Zabbix server 实例，并将其关联到已创建的 MySQL server 实例。
+
+docker run --name zabbix-server-mysql -t \
+      -e DB_SERVER_HOST="mysql-server" \
+      -e MYSQL_DATABASE="zabbix" \
+      -e MYSQL_USER="zabbix" \
+      -e MYSQL_PASSWORD="zabbix_pwd" \
+      -e MYSQL_ROOT_PASSWORD="root_pwd" \
+      --link mysql-server:mysql \
+      -p 10051:10051 \
+      -d zabbix/zabbix-server-mysql:latest
+ 
+
+第四步：启动 Zabbix Web 界面，并将其关联到已创建的 MySQL server 和 Zabbix server 实例。
+
+docker run --name zabbix-web-nginx-mysql -t \
+      -e DB_SERVER_HOST="mysql-server" \
+      -e MYSQL_DATABASE="zabbix" \
+      -e MYSQL_USER="zabbix" \
+      -e MYSQL_PASSWORD="zabbix_pwd" \
+      -e MYSQL_ROOT_PASSWORD="root_pwd" \
+      --link mysql-server:mysql \
+      --link zabbix-server-mysql:zabbix-server \
+      -p 81:80 \
+      -p 8088:8080 \
+      -p 8444:8443 \
+      -d zabbix/zabbix-web-nginx-mysql:latest
+
+第四步：使用浏览器打开  http://127.0.0.1:8088,查看安装是否成功
+ 
