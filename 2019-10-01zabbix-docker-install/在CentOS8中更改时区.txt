@@ -1,0 +1,25 @@
+在CentOS8中更改时区
+
+1、检查现在的时区
+[root@localhost ~]# timedatectl 
+               Local time: Tue 2020-03-31 16:35:23 CST
+           Universal time: Tue 2020-03-31 08:35:23 UTC
+                 RTC time: Tue 2020-03-31 08:35:23
+                Time zone: Asia/Shanghai (CST, +0800)
+System clock synchronized: yes
+              NTP service: active
+          RTC in local TZ: no
+
+
+2、列出所有可用时区
+[root@localhost ~]# timedatectl list-timezones
+…
+Asia/Samarkand
+Asia/Seoul
+Asia/Shanghai
+Asia/Singapore
+Asia/Srednekolymsk
+…
+
+3、更改时区
+[root@localhost ~]# timedatectl set-timezone Asia/Shanghai

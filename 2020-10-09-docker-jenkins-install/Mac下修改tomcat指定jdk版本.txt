@@ -1,0 +1,9 @@
+https://blog.csdn.net/medivhq/article/details/51822113
+
+
+在catalina.sh和setclasspath.sh中分别添加如下代码：
+catalina.sh所在的路径为：/Library/tomcat9/bin/catalina.sh
+
+vi /Library/tomcat9/bin/catalina.sh
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_261.jdk/Contents/Home
+export JRE_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_261.jdk/Contents/Home
