@@ -1,0 +1,27 @@
+https://www.jianshu.com/p/f4088f100c14
+
+一、配置远程Docker Daemon链接方式
+2375未加密，2376为加密通信端口
+
+1、编辑/lib/systemd/system/docker.service
+
+nano /lib/systemd/system/docker.service
+
+2、找到ExecStart添加-H tcp://0.0.0.0:2375
+
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H fd://
+docker 2375端口
+
+3、设置配置并重启服务
+
+systemctl daemon-reload
+sudo service docker restart
+
+4、查看开启端口情况
+
+netstat -tunlp
+
+二、VSCODE链接设置
+
+命令行：docker:host
+   tcp://ip:2375

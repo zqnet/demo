@@ -8,6 +8,15 @@ VsCode搭建springboot 并配置maven环境：https://blog.csdn.net/zhanaolu4821
 
 1、mac下安装maven及环境配置
 https://www.cnblogs.com/helios-fz/p/11061033.html
+    1、下载地址：http://maven.apache.org/download.cgi。下载maven文件并解压。
+    2、配置环境变量、编辑.bash_profile文件：vim ~/.bash_profile
+    配置maven文件地址：
+    export M2_HOME=/Users/xxx/Documents/maven/apache-maven-3.6.1
+    export PATH=$PATH:$M2_HOME/bin
+    保存文件，执行如下命令使配置生效：
+    3、source ~/.bash_profile
+    4、验证输入：mvn -v
+    证明配置成功。
 
 2、在settings.json文件中添加一下配置
     "maven.executable.path":"/Library/maven/bin/mvn",
