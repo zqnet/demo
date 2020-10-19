@@ -1,0 +1,87 @@
+VsCode搭建springboot 并配置maven环境：https://blog.csdn.net/zhanaolu4821/article/details/84873312
+
+前置条件：vscode安装必须的插件
+
+找到并安装 Java Extension Pack (Java 扩展包)，如果你已经安装了 Language Support for Java(TM) by Red Hat，也可以单独找到并安装 Java Debugger for Visual Studio Code 扩展。
+输入“Spring Boot Extension”搜索商店扩展插件。
+找到并安装 “Spring Boot Extension Pack”。
+
+1、mac下安装maven及环境配置
+https://www.cnblogs.com/helios-fz/p/11061033.html
+    1、下载地址：http://maven.apache.org/download.cgi。下载maven文件并解压。
+    2、配置环境变量、编辑.bash_profile文件：vim ~/.bash_profile
+    配置maven文件地址：
+    export M2_HOME=/Users/xxx/Documents/maven/apache-maven-3.6.1
+    export PATH=$PATH:$M2_HOME/bin
+    保存文件，执行如下命令使配置生效：
+    3、source ~/.bash_profile
+    4、验证输入：mvn -v
+    证明配置成功。
+
+2、在settings.json文件中添加一下配置
+    "maven.executable.path":"/Library/maven/bin/mvn",
+    "maven.terminal.useJavaHome": true,
+    "maven.terminal.customEnv": [
+        {
+            "environmentVariable": "JAVA_HOME",
+            "value":"/Library/Java/JavaVirtualMachines/jdk1.8.0_261.jdk/Contents/Home"
+        }
+    ]
+
+3、如果你的mvn更新包速度很慢，建议使用阿里云的镜像速度会快点（修改maven的setting配置如下）：
+
+ <!-- 阿里云仓库 -->
+        <mirror>
+            <id>alimaven</id>
+            <mirrorOf>central</mirrorOf>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
+        </mirror>
+        <mirror>
+            <id>nexus-aliyun</id>
+            <mirrorOf>*</mirrorOf>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </mirror>
+        <!-- 中央仓库1 -->
+        <mirror>
+            <id>repo1</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Human Readable Name for this Mirror.</name>
+            <url>http://repo1.maven.org/maven2/</url>
+        </mirror>
+    
+        <!-- 中央仓库2 -->
+        <mirror>
+            <id>repo2</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Human Readable Name for this Mirror.</name>
+            <url>http://repo2.maven.org/maven2/</url>
+        </mirror>
+
+4、创建Spring Boot项目
+
+使用快捷键(Ctrl+Shift+P)命令窗口，输入 Spring 选择创建 Maven 项目。 效果如下：
+选择需要使用的语言、Group Id、项目名称等，这里选择Java：
+选择Spring Boot版本：
+选择需要引入的包，引入如下几个包即可满足web开发：
+DevTools（代码修改热更新，无需重启）、Web（集成tomcat、SpringMVC）、Lombok（智能生成setter、getter、toString等接口，无需手动生成，代码更简介）、Thymeleaf （模板引擎）。
+选择好要引入的包后直接回车，在新弹出的窗口中选择项目路径，至此Spring Boot项目创建完成。
+
+5、添加测试代码，TestController.java
+package com.xzhang.demo;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("test")
+public class TestController {
+    @RequestMapping("")
+    public String test(){
+        return "testController test";
+    }
+}
+
+6、点击执行后，在浏览器中查看http://localhost:8080/test
+查看返回结果是否正常

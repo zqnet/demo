@@ -1,0 +1,10 @@
+##VScode Remote 远程开发与调试。 https://www.jianshu.com/p/0f2fb935a9a1
+
+##SSH连接无需密码
+
+1、客户机生成密钥： 
+  ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
+2、拷贝到远程主机上：
+  ssh-copy-id root@10.211.55.4
+3、验证是否成功：
+  ssh root@10.211.55.4 "uptime"
