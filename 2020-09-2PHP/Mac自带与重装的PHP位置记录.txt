@@ -1,22 +1,22 @@
 自带的
-[apache]
+apache]
 apache配置文件 ：/etc/apache2/httpd.conf
 DocumentRoot : /data/apacheroot
 apachectl位置 : /usr/sbin/apachectl
 重启apache命令：sudo /usr/sbin/apachectl restart
-[PHP]
+PHP]
 /usr/bin/php
 /usr/bin/phpize
 /usr/bin/php-config
 /usr/lib/php/extensions/no-debug-non-zts-20160303/（扩展目录）
 
 brew重装PHP时，生成的
-[apache]
+apache]
 apache配置文件 ：/usr/local/etc/httpd/httpd.conf
 DocumentRoot : /data/localhost_root
 apachectl位置 : /usr/local/bin/apachectl 即 /usr/local/Cellar/httpd/2.4.37_1/bin/apachectl
 重启apache命令 : sudo /usr/local/bin/apachectl restart
-[PHP]
+PHP]
 /usr/local/bin/php 即 /usr/local/Cellar/php/7.3.1/bin/php
 /usr/local/bin/phpize 即 /usr/local/Cellar/php/7.3.1/bin/phpize
 /usr/local/bin/php-config 即 /usr/local/Cellar/php/7.3.1/bin/php-config

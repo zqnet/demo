@@ -1,4 +1,4 @@
-20190919 最近改用 vsCode ，php 调试使用 xdebug，需要安装 xdebug
+php 调试使用 xdebug，需要安装 xdebug
 xdebug 安装怎么这么费劲？
 1. 参考
 https://www.jianshu.com/p/47fcf57b490e
