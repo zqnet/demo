@@ -1,0 +1,28 @@
+1、jenkins配置ssh
+https://www.cnblogs.com/wt11/p/9424840.html
+
+
+2、注意jenkin不能使用一般的密钥生成方式（ssh-keygen -t rsa）：
+  必须使用：ssh-keygen -m PEM -t rsa -b 4096
+  https://www.cnblogs.com/architectforest/p/13707244.html
+
+3、jenkins添加ssh_server
+https://www.pianshen.com/article/6880328073/
+
+环境
+  假设jenkins部署在A服务器上，ssh_server为B服务器
+
+步骤一：
+	B服务器添加jenkins用户，并生成密钥
+	useradd jenkins;
+	su jenkins;
+	cd /home/jenkins/.ssh;
+	cat id_rsa.pub > authorized_keys;
+	chmod 600 authorized_keys;
+步骤二:
+   将B机器的私钥放置到Jenkins的ssh_server配置中在这里插入图片描述
+步骤三：（同时为内网，可以忽略）
+	打开A机器访问B机器内网地址/外网地址的SSH端口（推荐走内网地址）
+	例如：A外网IP-》访问B内网IP的22端口
+步骤四：
+    测试连通性
