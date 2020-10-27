@@ -1,0 +1,137 @@
+https://blog.csdn.net/m0_46305762/article/details/107160317
+
+概述
+
+This module allows for addition or deletion of services and ports (either TCP or UDP) in either running or permanent firewalld rules.
+firewalld模块用来添加、删除防火墙规则。
+
+常用变量
+
+service ： Name of a service to add/remove to/from firewalld.The service must be listed in output of firewall-cmd --get-services.
+指定放行的服务，此服务必须要在firewall-cmd --get-services查询的到。
+
+permanent ： Should this configuration be in the running firewalld configuration or persist across reboots. As of Ansible 2.3, permanent operations can operate on firewalld configs when it is not running.
+Note that if this is no’, immediate is assumed yes’.
+保存策略，下次启动的时候自动加载。
+
+state : Enable or disable a setting.For ports: Should this port accept (enabled) or reject (disabled) connections.The states present’ and absent’ can only be used in zone level operations (i.e. when no other parameters but zone and state are set).
+(Choices: absent, disabled, enabled, present)
+指定防火墙策略状态，enable表示策略生效，disable表示策略禁用，present新建策略，absent删除策略。
+
+port : Name of a port or port range to add/remove to/from firewalld. Must be in the form PORT/PROTOCOL or PORT-PORT/PROTOCOL for port ranges.
+指定放行的端口/协议。
+
+zone ： The firewalld zone to add/remove to/from.
+Note that the default zone can be configured per system but public’ is default from upstream.Available choices can be extended based on per-system configs, listed here are “out of the box” defaults.Possible values include block’, dmz’, drop’, external’, home’, internal’, `public’, trusted’, work’.
+指定防火墙信任级别。
+drop: 丢弃所有进入的包，而不给出任何响应
+block: 拒绝所有外部发起的连接，允许内部发起的连接
+public: 允许指定的进入连接
+external: 同上，对伪装的进入连接，一般用于路由转发
+dmz: 允许受限制的进入连接
+work: 允许受信任的计算机被限制的进入连接，类似 workgroup
+home: 同上，类似 homegroup
+internal: 同上，范围针对所有互联网用户
+trusted: 信任所有连接
+
+interface : The interface you would like to add/remove to/from a zone in firewalld.
+指定接口属于哪个信任级别。
+
+source ： The source/network you would like to add/remove to/from firewalld.
+指定网段。
+
+immediate : Should this configuration be applied immediately, if set as permanent
+防火墙策略立即生效。
+
+示例
+#案例1：在默认信任级别新增放行https协议数据的策略，下次重启的时候策略自动加载
+
+- firewalld:
+    service: https
+    permanent: yes
+state: enabled
+
+#原先的状态，public信任级别中没有https
+[root@control ~]# ansible node1 -a 'firewall-cmd --zone=public --list-all'
+
+#新增放行https协议数据的策略，下次重启的时候策略自动加载
+[root@control ~]# ansible node1 -m firewalld -a 'service=https permanent=yes state=enabled'
+
+#查看状态，发现策略没有立马生效
+[root@control ~]# ansible node1 -a 'firewall-cmd --zone=public --list-all'
+
+#重启防火墙服务
+[root@control ~]# ansible node1 -m service -a 'name=firewalld state=restarted'   防火墙策略生效
+
+#显示防火墙的相关信息（再次查看，策略在重启后自动生效了）
+[root@control ~]# ansible node1 -a 'firewall-cmd --zone=public --list-all'
+
+#案例2：在默认信任级别新增放行tcp 8081端口的策略且策略状态为禁用，下次重启的时候策略不自动加载
+
+- firewalld:
+    port: 8081/tcp
+    permanent: yes
+    state: disabled
+
+#新增防火墙策略
+[root@control ~]# ansible node1 -m firewalld -a 'port=8081/tcp permanent=yes state=disabled'
+
+#重启防火墙策略
+[root@control ~]# ansible node1 -m service -a 'name=firewalld state=restarted'
+
+#策略未启用
+[root@control ~]# ansible node1 -a 'firewall-cmd --zone=public --list-all'
+
+
+#案例3：在默认信任级别新增放行UDP协议161至162端口的防火墙策略，下次重启的时候策略自动加载
+
+- firewalld:
+    port: 161-162/udp
+    permanent: yes
+    state: enabled
+
+[root@control ~]# ansible node1 -m firewalld -a 'port=162-162/udp permanent=yes state=enabled'
+
+
+#案例4：在dmz信任级别新增放行http协议数据的防火墙策略，下次重启的时候策略自动加载
+
+- firewalld:
+    zone: dmz
+    service: http
+    permanent: yes
+state: enabled
+
+#dmz区域策略
+[root@control ~]# ansible node1 -m firewalld -a 'zone=dmz service=http  permanent=yes state=enabled'
+
+
+#案例5：在internal区域新增放行192.0.2.0/24网段的防火墙策略
+
+- firewalld:
+ source: 192.0.2.0/24
+ zone: internal
+ state: enabled
+
+[root@control ~]# ansible node1 -m firewalld -a 'zone=internal source="192.0.2.0/24" state=enabled'
+[root@control ~]# ansible node1 -m firewalld -a 'zone=internal source="192.0.2.0/24" state=enabled permanent=yes'
+
+
+#案例6：把eth0接口加入到truested信任级别
+
+- firewalld:
+    zone: trusted
+    interface: eth0
+    permanent: yes
+state: enabled
+
+[root@control ~]# ansible node1 -m firewalld -a 'interface=eth0 zone=trusted state=enabled permanent=yes'
+
+#案例7：新增custom信任级别
+
+- firewalld:
+    zone: custom
+    state: present
+permanent: yes
+
+#parmanent 永久的
+[root@control ~]# ansible node1 -m firewalld -a ' zone=custom state=present  permanent=yes'
